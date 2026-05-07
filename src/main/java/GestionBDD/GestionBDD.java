@@ -16,11 +16,20 @@ import java.sql.Statement;
 public class GestionBDD {
 
     private static String datosConexion = "jdbc:mysql://localhost:3306/";
-    private static String baseDatos = "BDDLibros";
+    private static String baseDatos = "BDDLibros_Gestion";
     private static String usuario = "root";
     private static String password = "";
     private Connection con;
 
+    public GestionBDD(Connection con) {
+        this.con = con;
+    }
+
+    public Connection getCon() {
+        return con;
+    }
+    
+    
     public GestionBDD() {
 
         try {
@@ -41,6 +50,7 @@ public class GestionBDD {
         }
     }
 
+    //Crear la base de datos
     private void crearBDD() throws SQLException {
 
         String query = "create database if not exists " + baseDatos + ";";
@@ -50,7 +60,7 @@ public class GestionBDD {
         try {
 
             stmt = con.createStatement();
-            stmt.executeQuery(query);
+            stmt.execute(query); //si pongo executeQuery() debo escribir la QUERY, si pongo execute() le debo pasar la query q debo executar
 
             con = DriverManager.getConnection(
                     datosConexion + baseDatos,
@@ -64,5 +74,29 @@ public class GestionBDD {
             stmt.close();
         }
 
+    }
+    
+    private void crearTabla() throws SQLException{
+    
+        String query = "create table Libros("
+                + "isbn varchar(20) primary key,"
+                + "titulo varchar(200) not null,"
+                + "autores varchar(300),"
+                + "precio double,"
+                + "cantidadInventario int);";
+        
+        Statement stmt = null;
+        try{
+        
+            stmt = con.createStatement();
+            stmt.execute(query);
+            
+        }catch (SQLException e){
+        
+            e.printStackTrace();
+        }finally{
+        
+            stmt.close();
+        }
     }
 }

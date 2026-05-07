@@ -4,7 +4,7 @@
  */
 package vista;
 
-import BDD.GestionBDD;
+import GestionBDD.GestionBDD;
 import controlador.GestionLibros;
 import java.io.IOException;
 import java.sql.SQLException;
