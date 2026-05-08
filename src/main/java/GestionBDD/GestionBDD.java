@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -28,8 +29,7 @@ public class GestionBDD {
     public Connection getCon() {
         return con;
     }
-    
-    
+
     public GestionBDD() {
 
         try {
@@ -75,28 +75,54 @@ public class GestionBDD {
         }
 
     }
-    
-    private void crearTabla() throws SQLException{
-    
+
+    private void crearTabla() throws SQLException {
+
         String query = "create table Libros("
                 + "isbn varchar(20) primary key,"
                 + "titulo varchar(200) not null,"
                 + "autores varchar(300),"
                 + "precio double,"
                 + "cantidadInventario int);";
+
+        Statement stmt = null;
+        try {
+
+            stmt = con.createStatement();
+            stmt.execute(query);
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        } finally {
+
+            stmt.close();
+        }
+    }
+
+    public void insertarDatosLibro(String isbn, String titulo, ArrayList<String> autores, double precio, int cantidadInventario) throws SQLException {
+
+        String query = "insert into serie (isbn, titulo, autores, precio, cantidadInventario)"
+                + "values( '" + isbn + "', '" + titulo + "', '" + autores + "', '" + precio + "', '" + cantidadInventario + "');";
+
         
         Statement stmt = null;
+        
         try{
         
             stmt = con.createStatement();
-            stmt.execute(query);
+            stmt.executeQuery(query);
+            
             
         }catch (SQLException e){
         
             e.printStackTrace();
-        }finally{
+        
+        } finally {
         
             stmt.close();
         }
+        
     }
+
 }

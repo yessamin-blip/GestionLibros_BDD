@@ -5,6 +5,7 @@
 package controlador;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import modelo.Libro;
@@ -18,6 +19,8 @@ import persistencia.FicheroLibro;
 public class GestionLibros {
 
     private static HashMap<String, Libro> inventarioLibro = new HashMap<>(); //inicializado
+    
+    private GestionBDD.GestionBDD bdd ;
 
     public static void guardar() throws IOException {
         FicheroLibro.guardar(inventarioLibro);
@@ -27,7 +30,7 @@ public class GestionLibros {
         inventarioLibro = FicheroLibro.cargar();
     }
 
-    public static void agregarLibro(Libro l) {
+    public static void agregarLibro(Libro l) throws SQLException {
         //equals() y hashCode() para verificar si ya existe por título
         boolean existe = false;
         for (Libro libro : inventarioLibro.values()) {
@@ -40,6 +43,9 @@ public class GestionLibros {
         if (existe) {
             System.err.println("El libro ya existe");
         } else {
+            
+            bdd.insertarDatosLibro(l.getIsbn(),l.getTitulo(), l.   n  t5f5);
+            
             inventarioLibro.put(l.getIsbn(), l); // key es el ISBN
         }
     }
