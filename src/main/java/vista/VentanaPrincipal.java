@@ -25,10 +25,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      *
      * @param libros
      */
-    public VentanaPrincipal(GestionLibros libros) {
-        this.libros = libros;
+    public VentanaPrincipal() {
         initComponents();
-
     }
 
     /**
@@ -200,12 +198,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        GestionBDD bdd = new GestionBDD();
-        bdd.getCon();
-        GestionLibros g = new GestionLibros();
         GestionLibros.cargar();
-        VentanaPrincipal vp = new VentanaPrincipal(g);
-
+        VentanaPrincipal vp = new VentanaPrincipal();
         vp.setVisible(true);
 
     }

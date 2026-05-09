@@ -223,7 +223,7 @@ public class VentanaActualizar extends javax.swing.JFrame {
     private void atrasBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasBotonActionPerformed
         // TODO add your handling code here:
 
-        VentanaPrincipal vp = new VentanaPrincipal(libros);
+        VentanaPrincipal vp = new VentanaPrincipal();
         
         vp.setVisible(true);
         

@@ -46,6 +46,12 @@ public class Libro {
     public void setAutores(ArrayList<String> autores) {
         this.autores = autores;
     }
+    
+    
+    // devuelve autores como String para BDD y fichero
+    public String getAutoresString() {
+        return String.join(",", autores);
+    }
 
     public double getPrecio() {
         return precio;

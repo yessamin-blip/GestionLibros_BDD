@@ -6,6 +6,8 @@ package controlador;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import modelo.Libro;
@@ -15,12 +17,11 @@ import persistencia.FicheroLibro;
  *
  * @author yessm
  */
-//el HashMap debe estar en el main o sea aquí 
+// el HashMap debe estar en el main o sea aquí
 public class GestionLibros {
 
-    private static HashMap<String, Libro> inventarioLibro = new HashMap<>(); //inicializado
-    
-    private GestionBDD.GestionBDD bdd ;
+    private static HashMap<String, Libro> inventarioLibro = new HashMap<>(); // inicializado
+    private static GestionBDD.GestionBDD bdd = new GestionBDD.GestionBDD(); // static e inicializado
 
     public static void guardar() throws IOException {
         FicheroLibro.guardar(inventarioLibro);
@@ -31,22 +32,26 @@ public class GestionLibros {
     }
 
     public static void agregarLibro(Libro l) throws SQLException {
-        //equals() y hashCode() para verificar si ya existe por título
+        // equals() y hashCode() para verificar si ya existe por título
         boolean existe = false;
         for (Libro libro : inventarioLibro.values()) {
-            if (libro.equals(l)) { //equals() compara por título
+            if (libro.equals(l)) { // equals() compara por título
                 existe = true;
                 break;
             }
         }
-
         if (existe) {
             System.err.println("El libro ya existe");
         } else {
-            
-            bdd.insertarDatosLibro(l.getIsbn(),l.getTitulo(), l.   n  t5f5);
-            
-            inventarioLibro.put(l.getIsbn(), l); // key es el ISBN
+            //getAutoresString() en lugar de getAutores()
+            bdd.insertarDatosLibro(
+                    l.getIsbn(),
+                    l.getTitulo(),
+                    l.getAutoresString(),
+                    l.getPrecio(),
+                    l.getCantidadInventario()
+            );
+            inventarioLibro.put(l.getIsbn(), l);
         }
     }
 
@@ -58,7 +63,6 @@ public class GestionLibros {
                 break;
             }
         }
-
         if (libroEncontrado != null) {
             libroEncontrado.setPrecio(precio);
             libroEncontrado.setCantidadInventario(cantidad);
@@ -75,7 +79,6 @@ public class GestionLibros {
                 break;
             }
         }
-
         if (isbnAEliminar != null) {
             inventarioLibro.remove(isbnAEliminar);
         } else {

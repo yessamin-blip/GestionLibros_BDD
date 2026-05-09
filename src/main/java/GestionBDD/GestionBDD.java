@@ -31,98 +31,78 @@ public class GestionBDD {
     }
 
     public GestionBDD() {
-
         try {
-
             con = DriverManager.getConnection(datosConexion, usuario, password);
             try {
-
                 crearBDD();
-
                 crearTabla();
             } catch (Exception e) {
-
                 e.printStackTrace();
             }
         } catch (SQLException e) {
-
             e.printStackTrace();
         }
     }
 
-    //Crear la base de datos
+    // Crear la base de datos
     private void crearBDD() throws SQLException {
-
         String query = "create database if not exists " + baseDatos + ";";
-
         Statement stmt = null;
-
         try {
-
             stmt = con.createStatement();
-            stmt.execute(query); //si pongo executeQuery() debo escribir la QUERY, si pongo execute() le debo pasar la query q debo executar
-
+            stmt.execute(query);
             con = DriverManager.getConnection(
                     datosConexion + baseDatos,
                     usuario, password
             );
         } catch (SQLException e) {
-
             e.printStackTrace();
         } finally {
-
             stmt.close();
         }
-
     }
 
     private void crearTabla() throws SQLException {
-
-        String query = "create table Libros("
+        String query = "create table if not exists Libros("
                 + "isbn varchar(20) primary key,"
                 + "titulo varchar(200) not null,"
                 + "autores varchar(300),"
                 + "precio double,"
                 + "cantidadInventario int);";
-
         Statement stmt = null;
         try {
-
             stmt = con.createStatement();
             stmt.execute(query);
-
+            
         } catch (SQLException e) {
-
+            
             e.printStackTrace();
+            
         } finally {
-
+            
             stmt.close();
         }
     }
 
-    public void insertarDatosLibro(String isbn, String titulo, ArrayList<String> autores, double precio, int cantidadInventario) throws SQLException {
+    public void insertarDatosLibro(String isbn, String titulo, String autores, double precio, int cantidadInventario) throws SQLException {
+        // "Libros", precio y cantidadInventario 
+        String query = "insert into Libros (isbn, titulo, autores, precio, cantidadInventario) "
+                + "values('" + isbn + "', '" + titulo + "', '" + autores + "', " + precio + ", " + cantidadInventario + ");";
 
-        String query = "insert into serie (isbn, titulo, autores, precio, cantidadInventario)"
-                + "values( '" + isbn + "', '" + titulo + "', '" + autores + "', '" + precio + "', '" + cantidadInventario + "');";
-
-        
         Statement stmt = null;
-        
-        try{
-        
-            stmt = con.createStatement();
-            stmt.executeQuery(query);
-            
-            
-        }catch (SQLException e){
-        
-            e.printStackTrace();
-        
-        } finally {
-        
-            stmt.close();
-        }
-        
-    }
 
+        try {
+            stmt = con.createStatement();
+            stmt.execute(query); // executeQuery() > execute() para INSERT
+            
+        } catch (SQLException e) {
+            
+            e.printStackTrace();
+            
+        } finally {
+            
+            stmt.close();
+            
+        }
+    }
 }

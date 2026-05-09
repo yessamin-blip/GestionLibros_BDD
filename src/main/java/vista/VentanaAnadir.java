@@ -6,6 +6,7 @@ package vista;
 
 import controlador.GestionLibros;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Libro;
@@ -25,7 +26,7 @@ public class VentanaAnadir extends javax.swing.JFrame {
      * @param libros
      */
     public VentanaAnadir(GestionLibros libros) {
-        this.libros = libros;
+      
         initComponents();
 
     }
@@ -188,7 +189,9 @@ public class VentanaAnadir extends javax.swing.JFrame {
             String precio = jTextPrecio.getText();
 
             if (titulo.isEmpty() || isbn.isEmpty() || autores.isEmpty() || cantidad.isEmpty() || precio.isEmpty()) {
+                
                 JOptionPane.showMessageDialog(rootPane, "Los valores no pueden estar vacios.");
+                
                 return;
             }
 
@@ -196,7 +199,9 @@ public class VentanaAnadir extends javax.swing.JFrame {
             int cantidadI = Integer.parseInt(cantidad);
 
             if (precioD < 0) {
+                
                 JOptionPane.showMessageDialog(rootPane, "El precio debe ser mayor que 0");
+                
                 return;
             }
 
@@ -210,27 +215,36 @@ public class VentanaAnadir extends javax.swing.JFrame {
                     .anyMatch(libro -> libro.equals(l));
 
             if (existe) {
-
+                
                 JOptionPane.showMessageDialog(rootPane, "El libro ya existe.");
-
+                
             } else {
-
+                
                 GestionLibros.agregarLibro(l);
-
+                
                 JOptionPane.showMessageDialog(rootPane, "Libro añadido correctamente.");
+                // limpiar campos tras añadir correctamente
+                jTextTitulo.setText("");
+                jTextISBN.setText("");
+                jTextAutores.setText("");
+                jTextCantidad.setText("");
+                jTextPrecio.setText("");
             }
-
         } catch (NumberFormatException e) {
-
+            
             JOptionPane.showMessageDialog(rootPane, "Los valores deben ser númericos.");
-
+            
+        } catch (SQLException e) { 
+            
+            JOptionPane.showMessageDialog(rootPane, "Error al guardar en la base de datos.");
         }
+
     }//GEN-LAST:event_guardarBtonActionPerformed
 
     private void atrasBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasBotonActionPerformed
         // TODO add your handling code here:
 
-        VentanaPrincipal vp = new VentanaPrincipal(libros);
+        VentanaPrincipal vp = new VentanaPrincipal();
 
         vp.setVisible(true);
 
